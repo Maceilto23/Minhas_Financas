@@ -1,0 +1,62 @@
+name: Compilar Minhas Financas APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar Android SDK 34
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Dar permissao ao Gradle
+        run: chmod +x ./gradlew
+
+      - name: Conferir arquivos do projeto
+        run: |
+          test -f settings.gradle.kts
+          test -f build.gradle.kts
+          test -f app/build.gradle.kts
+          test -f app/src/main/AndroidManifest.xml
+          echo "Estrutura Android encontrada"
+
+      - name: Mostrar versao do Gradle
+        run: ./gradlew --version
+
+      - name: Limpar projeto
+        run: ./gradlew clean
+
+      - name: Compilar APK Debug
+        run: ./gradlew :app:assembleDebug --stacktrace
+
+      - name: Conferir APK gerado
+        run: |
+          ls -lah app/build/outputs/apk/debug/
+          test -f app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Publicar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Minhas-Financas-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
