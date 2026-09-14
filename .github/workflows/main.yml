@@ -28,28 +28,33 @@ jobs:
           yes | sdkmanager --licenses > /dev/null || true
           sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
-      - name: Dar permissao ao Gradle
-        run: chmod +x ./gradlew
+      - name: Configurar Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
 
-      - name: Conferir arquivos do projeto
+      - name: Conferir estrutura Android
         run: |
+          echo "=== ARQUIVOS DA RAIZ ==="
+          ls -la
           test -f settings.gradle.kts
           test -f build.gradle.kts
           test -f app/build.gradle.kts
           test -f app/src/main/AndroidManifest.xml
-          echo "Estrutura Android encontrada"
+          echo "Estrutura Android OK"
 
-      - name: Mostrar versao do Gradle
-        run: ./gradlew --version
+      - name: Verificar Gradle
+        run: gradle --version
 
       - name: Limpar projeto
-        run: ./gradlew clean
+        run: gradle clean --stacktrace
 
       - name: Compilar APK Debug
-        run: ./gradlew :app:assembleDebug --stacktrace
+        run: gradle :app:assembleDebug --stacktrace
 
-      - name: Conferir APK gerado
+      - name: Conferir APK
         run: |
+          echo "=== APK GERADO ==="
           ls -lah app/build/outputs/apk/debug/
           test -f app/build/outputs/apk/debug/app-debug.apk
 
