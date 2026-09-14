@@ -1,0 +1,34 @@
+PASSO A PASSO — REPOSITÓRIO Minhas_Financas
+
+1. Apague do repositório antigo os arquivos da versão PWA/PHP que não fazem parte deste Android:
+   index.php
+   manifest.webmanifest
+   sw.js
+   pasta assets antiga, se existir
+
+2. Extraia este ZIP.
+
+3. Envie TODO o conteúdo da pasta Minhas_Financas_Android_SQLite para a RAIZ do repositório.
+   A raiz deverá mostrar:
+   .github/
+   app/
+   build.gradle.kts
+   gradle.properties
+   gradlew
+   gradlew.bat
+   settings.gradle.kts
+   README.md
+
+4. Faça commit na branch main.
+
+5. Abra GitHub > Actions.
+
+6. Aguarde:
+   Compilar Minhas Financas APK
+
+7. Quando ficar verde:
+   abra o build > Artifacts > Minhas-Financas-APK.
+
+IMPORTANTE:
+O gradlew deste pacote baixa o Gradle 8.7 sozinho durante o GitHub Actions.
+Por isso não depende do gradle-wrapper.jar que estava faltando no projeto anterior.
