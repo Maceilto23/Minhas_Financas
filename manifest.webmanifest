@@ -1,9 +1,0 @@
-{
-  "name": "MeuCaixa - Controle Financeiro",
-  "short_name": "MeuCaixa",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#0b1220",
-  "theme_color": "#111827",
-  "icons": []
-}
